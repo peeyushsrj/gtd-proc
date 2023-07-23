@@ -1,0 +1,48 @@
+<!-- app/views/tasks/gtd.html.erb -->
+
+<h1>GTD Tasks</h1>
+
+<%= form_tag(gtd_tasks_path, method: :get) do %>
+  <div>
+    <%= label_tag 'context', 'Context:' %>
+    <%= text_field_tag 'context', params[:context], placeholder: 'Enter context' %>
+  </div>
+
+  <div>
+    <%= label_tag 'energy', 'Energy Level:' %>
+    <%= check_box_tag 'energy', '1', params[:energy] %>
+  </div>
+
+  <%= submit_tag 'Filter' %>
+<% end %>
+
+<% if @tasks.present? %>
+  <table>
+    <thead>
+      <tr>
+        <th>Description</th>
+        <th>Due Date</th>
+        <th>Priority</th>
+        <th>Project</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @tasks.each do |project, tasks| %>
+        <tr>
+          <td colspan="4"><strong><%= project %></strong></td>
+        </tr>
+        <% tasks.each do |task| %>
+          <tr>
+            <td><%= link_to task.description, task_path(task) %> </td>
+            <td><%= task.due_date %></td>
+            <td><%= task.impact %></td>
+            <td><%= task.project %></td>
+          </tr>
+        <% end %>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p>No tasks found.</p>
+<% end %>
+
